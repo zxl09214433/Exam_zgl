@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.exam.zgl.bean.Questions;
 import com.exam.zgl.service.QuestionsService;
