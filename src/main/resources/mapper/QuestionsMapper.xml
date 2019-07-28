@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam.zgl.mapper.QuestionsMapper" >
+  <resultMap id="BaseResultMap" type="com.exam.zgl.bean.Questions" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="qname" property="qname" jdbcType="VARCHAR" />
+    <result column="correctAnswer" property="correctanswer" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, qname, correctAnswer
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from questions
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from questions
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.exam.zgl.bean.Questions" >
+    insert into questions (id, qname, correctAnswer
+      )
+    values (#{id,jdbcType=INTEGER}, #{qname,jdbcType=VARCHAR}, #{correctanswer,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.exam.zgl.bean.Questions" >
+    insert into questions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="qname != null" >
+        qname,
+      </if>
+      <if test="correctanswer != null" >
+        correctAnswer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="qname != null" >
+        #{qname,jdbcType=VARCHAR},
+      </if>
+      <if test="correctanswer != null" >
+        #{correctanswer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.exam.zgl.bean.Questions" >
+    update questions
+    <set >
+      <if test="qname != null" >
+        qname = #{qname,jdbcType=VARCHAR},
+      </if>
+      <if test="correctanswer != null" >
+        correctAnswer = #{correctanswer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.exam.zgl.bean.Questions" >
+    update questions
+    set qname = #{qname,jdbcType=VARCHAR},
+      correctAnswer = #{correctanswer,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectQuestions" resultMap="selectQuestionsResultMap">
+  select q.*,a.id as 'aid',aname,qid from questions q LEFT JOIN answers a on q.id=a.qid; 
+  </select>
+  <resultMap type="Questions" id="selectQuestionsResultMap" extends="BaseResultMap">
+  	<collection property="answers" ofType="Answers">
+  	<id property="id" column="aid"/>
+  	<result property="aname" column="aname"/>
+  	<result property="qid" column="qid"/>
+  	</collection>
+  </resultMap>
+</mapper>
